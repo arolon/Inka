@@ -6,9 +6,9 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-    color: #ffffff;
+    font-family: 'Proxima Nova', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #ffffff;
+    color: #000000;
     line-height: 1.6;
     min-height: 100vh;
 }
@@ -26,29 +26,28 @@ header {
 }
 
 header h1 {
+    font-family: 'Futura PT', 'Futura', 'Trebuchet MS', sans-serif;
     font-size: 2.5rem;
-    font-weight: 300;
+    font-weight: 600;
     margin-bottom: 0.5rem;
-    background: linear-gradient(45deg, #ffd700, #ffed4e);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #000000;
+    letter-spacing: -0.02em;
 }
 
 header p {
+    font-family: 'Proxima Nova', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-size: 1.1rem;
-    color: #cccccc;
-    font-weight: 300;
+    color: #666666;
+    font-weight: 400;
 }
 
 /* Form Styles */
 .reservation-form {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
+    background: #ffffff;
     border-radius: 20px;
     padding: 2.5rem;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    border: 2px solid #f0f0f0;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
 .form-section {
@@ -56,12 +55,14 @@ header p {
 }
 
 .form-section h2 {
+    font-family: 'Futura PT', 'Futura', 'Trebuchet MS', sans-serif;
     font-size: 1.4rem;
-    font-weight: 400;
+    font-weight: 600;
     margin-bottom: 1.5rem;
-    color: #ffd700;
-    border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+    color: #000000;
+    border-bottom: 2px solid #f08800;
     padding-bottom: 0.5rem;
+    letter-spacing: -0.01em;
 }
 
 .form-group {
@@ -76,10 +77,11 @@ header p {
 
 /* Label Styles */
 label {
+    font-family: 'Proxima Nova', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     display: block;
     margin-bottom: 0.5rem;
-    font-weight: 500;
-    color: #ffffff;
+    font-weight: 600;
+    color: #000000;
     font-size: 0.95rem;
 }
 
@@ -90,15 +92,15 @@ input[type="number"],
 input[type="date"],
 select,
 textarea {
+    font-family: 'Proxima Nova', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     width: 100%;
     padding: 0.875rem 1rem;
-    border: 2px solid rgba(255, 255, 255, 0.1);
+    border: 2px solid #e0e0e0;
     border-radius: 10px;
-    background: rgba(255, 255, 255, 0.05);
-    color: #ffffff;
+    background: #ffffff;
+    color: #000000;
     font-size: 1rem;
     transition: all 0.3s ease;
-    backdrop-filter: blur(5px);
 }
 
 input[type="text"]:focus,
@@ -108,9 +110,9 @@ input[type="date"]:focus,
 select:focus,
 textarea:focus {
     outline: none;
-    border-color: #ffd700;
-    background: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+    border-color: #f08800;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(240, 136, 0, 0.1);
     transform: translateY(-2px);
 }
 
@@ -120,20 +122,21 @@ input[type="number"]:hover,
 input[type="date"]:hover,
 select:hover,
 textarea:hover {
-    border-color: rgba(255, 215, 0, 0.5);
-    background: rgba(255, 255, 255, 0.08);
+    border-color: #f08800;
+    background: #ffffff;
 }
 
 /* Placeholder Styles */
 ::placeholder {
-    color: rgba(255, 255, 255, 0.5);
+    color: #999999;
+    font-family: 'Proxima Nova', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 /* Select Styles */
 select {
     cursor: pointer;
     appearance: none;
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23000000' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
     background-repeat: no-repeat;
     background-position: right 1rem center;
     background-size: 1.5em 1.5em;
@@ -150,16 +153,18 @@ select {
 
 .radio-label,
 .checkbox-label {
+    font-family: 'Proxima Nova', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     display: flex;
     align-items: center;
     cursor: pointer;
     font-weight: 400;
     transition: color 0.3s ease;
+    color: #000000;
 }
 
 .radio-label:hover,
 .checkbox-label:hover {
-    color: #ffd700;
+    color: #f08800;
 }
 
 .radio-label input[type="radio"],
@@ -171,12 +176,13 @@ select {
 .checkbox-custom {
     width: 20px;
     height: 20px;
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    border: 2px solid #e0e0e0;
     border-radius: 50%;
     margin-right: 0.75rem;
     position: relative;
     transition: all 0.3s ease;
     flex-shrink: 0;
+    background: #ffffff;
 }
 
 .checkbox-custom {
@@ -184,8 +190,8 @@ select {
 }
 
 .radio-label input[type="radio"]:checked + .radio-custom {
-    border-color: #ffd700;
-    background: #ffd700;
+    border-color: #f08800;
+    background: #f08800;
 }
 
 .radio-label input[type="radio"]:checked + .radio-custom::after {
@@ -196,13 +202,13 @@ select {
     transform: translate(-50%, -50%);
     width: 8px;
     height: 8px;
-    background: #1a1a1a;
+    background: #ffffff;
     border-radius: 50%;
 }
 
 .checkbox-label input[type="checkbox"]:checked + .checkbox-custom {
-    border-color: #ffd700;
-    background: #ffd700;
+    border-color: #f08800;
+    background: #f08800;
 }
 
 .checkbox-label input[type="checkbox"]:checked + .checkbox-custom::after {
@@ -211,7 +217,7 @@ select {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: #1a1a1a;
+    color: #ffffff;
     font-size: 12px;
     font-weight: bold;
 }
@@ -220,7 +226,7 @@ select {
 textarea {
     resize: vertical;
     min-height: 100px;
-    font-family: inherit;
+    font-family: 'Proxima Nova', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 /* Submit Button Styles */
@@ -230,8 +236,9 @@ textarea {
 }
 
 .submit-btn {
-    background: linear-gradient(45deg, #ffd700, #ffed4e);
-    color: #1a1a1a;
+    font-family: 'Futura PT', 'Futura', 'Trebuchet MS', sans-serif;
+    background: #f08800;
+    color: #ffffff;
     border: none;
     padding: 1rem 3rem;
     font-size: 1.1rem;
@@ -241,44 +248,46 @@ textarea {
     transition: all 0.3s ease;
     text-transform: uppercase;
     letter-spacing: 1px;
-    box-shadow: 0 10px 20px rgba(255, 215, 0, 0.3);
+    box-shadow: 0 10px 20px rgba(240, 136, 0, 0.3);
 }
 
 .submit-btn:hover {
     transform: translateY(-3px);
-    box-shadow: 0 15px 30px rgba(255, 215, 0, 0.4);
-    background: linear-gradient(45deg, #ffed4e, #ffd700);
+    box-shadow: 0 15px 30px rgba(240, 136, 0, 0.4);
+    background: #e07a00;
 }
 
 .submit-btn:active {
     transform: translateY(-1px);
-    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+    box-shadow: 0 5px 15px rgba(240, 136, 0, 0.3);
 }
 
 .submit-btn:disabled {
     opacity: 0.6;
     cursor: not-allowed;
     transform: none;
-    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.2);
+    box-shadow: 0 5px 15px rgba(240, 136, 0, 0.2);
 }
 
 /* Error Styles */
 .error {
     border-color: #ff6b6b !important;
-    background: rgba(255, 107, 107, 0.1) !important;
+    background: rgba(255, 107, 107, 0.05) !important;
 }
 
 .error-message {
+    font-family: 'Proxima Nova', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     color: #ff6b6b;
     font-size: 0.85rem;
     margin-top: 0.25rem;
     display: block;
+    font-weight: 500;
 }
 
 /* Success Styles */
 .success {
     border-color: #51cf66 !important;
-    background: rgba(81, 207, 102, 0.1) !important;
+    background: rgba(81, 207, 102, 0.05) !important;
 }
 
 /* Responsive Design */

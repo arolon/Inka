@@ -454,5 +454,5 @@ form.addEventListener('submit', function() {
 initializeFormFunctionality();
 
 // Console welcome message
-console.log('%c🍽️ Restaurant Reservation Form', 'color: #ffd700; font-size: 20px; font-weight: bold;');
-console.log('%cForm data will be logged here when submitted!', 'color: #cccccc; font-size: 14px;'); 
+console.log('%c🍽️ Restaurant Reservation Form', 'color: #f08800; font-size: 20px; font-weight: bold;');
+console.log('%cForm data will be logged here when submitted!', 'color: #666666; font-size: 14px;'); 
