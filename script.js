@@ -4,6 +4,10 @@ const submitBtn = document.querySelector('.submit-btn');
 const dateInput = document.getElementById('date');
 const timeSelect = document.getElementById('time');
 const peopleInput = document.getElementById('people');
+const langToggle = document.getElementById('langToggle');
+
+// Language state
+let currentLanguage = 'en';
 
 // Wait for configuration to be loaded
 function waitForConfig() {
@@ -30,6 +34,9 @@ async function initializeFormFunctionality() {
     
     // Initialize form constraints
     initializeFormConstraints();
+    
+    // Initialize language
+    initializeLanguage();
 }
 
 // Set up all event listeners
@@ -39,6 +46,9 @@ function setupEventListeners() {
     
     // Date change event
     dateInput.addEventListener('change', handleDateChange);
+    
+    // Language toggle
+    langToggle.addEventListener('click', toggleLanguage);
     
     // Real-time validation
     const inputs = form.querySelectorAll('input, select, textarea');
@@ -50,6 +60,83 @@ function setupEventListeners() {
     // Phone number formatting
     const phoneInput = document.getElementById('phone');
     phoneInput.addEventListener('input', formatPhoneNumber);
+}
+
+// Initialize language system
+function initializeLanguage() {
+    // Set initial language
+    updateLanguageDisplay();
+    translatePage();
+}
+
+// Toggle language between English and Spanish
+function toggleLanguage() {
+    currentLanguage = currentLanguage === 'en' ? 'es' : 'en';
+    updateLanguageDisplay();
+    translatePage();
+    
+    // Update time options if a date is selected
+    if (dateInput.value) {
+        generateTimeOptions(dateInput.value);
+    }
+}
+
+// Update language toggle display
+function updateLanguageDisplay() {
+    const langText = langToggle.querySelector('.lang-text');
+    langText.textContent = currentLanguage.toUpperCase();
+}
+
+// Translate the entire page
+function translatePage() {
+    if (!restaurantConfig || !restaurantConfig.languages) return;
+    
+    const translations = restaurantConfig.languages[currentLanguage];
+    
+    // Translate elements with data-translate attribute
+    const translatableElements = document.querySelectorAll('[data-translate]');
+    translatableElements.forEach(element => {
+        const key = element.getAttribute('data-translate');
+        const translation = getNestedTranslation(translations, key);
+        if (translation) {
+            element.textContent = translation;
+        }
+    });
+    
+    // Translate placeholders
+    const placeholderElements = document.querySelectorAll('[data-translate-placeholder]');
+    placeholderElements.forEach(element => {
+        const key = element.getAttribute('data-translate-placeholder');
+        const translation = getNestedTranslation(translations, key);
+        if (translation) {
+            element.placeholder = translation;
+        }
+    });
+    
+    // Update document language
+    document.documentElement.lang = currentLanguage;
+}
+
+// Get nested translation value
+function getNestedTranslation(translations, key) {
+    const keys = key.split('.');
+    let value = translations;
+    
+    for (const k of keys) {
+        if (value && typeof value === 'object' && k in value) {
+            value = value[k];
+        } else {
+            return null;
+        }
+    }
+    
+    return value;
+}
+
+// Get translation for a specific key
+function getTranslation(key) {
+    if (!restaurantConfig || !restaurantConfig.languages) return key;
+    return getNestedTranslation(restaurantConfig.languages[currentLanguage], key) || key;
 }
 
 // Initialize form constraints from config
@@ -120,10 +207,20 @@ function generateTimeOptions(selectedDate) {
     const dayConfig = restaurantConfig.restaurant.hours[dayOfWeek];
     
     // Clear existing options
-    timeSelect.innerHTML = '<option value="">Select a time</option>';
+    timeSelect.innerHTML = '';
+    
+    // Add default option
+    const defaultOption = document.createElement('option');
+    defaultOption.value = '';
+    defaultOption.textContent = getTranslation('placeholders.selectTime');
+    timeSelect.appendChild(defaultOption);
     
     if (dayConfig.closed) {
-        timeSelect.innerHTML = '<option value="">Restaurant is closed on this day</option>';
+        const closedOption = document.createElement('option');
+        closedOption.value = '';
+        closedOption.textContent = getTranslation('placeholders.restaurantClosed');
+        closedOption.disabled = true;
+        timeSelect.appendChild(closedOption);
         timeSelect.disabled = true;
         return;
     }
@@ -196,7 +293,11 @@ function formatTimeForDisplay(timeString) {
 
 // Reset time options
 function resetTimeOptions() {
-    timeSelect.innerHTML = '<option value="">Select a date first</option>';
+    timeSelect.innerHTML = '';
+    const defaultOption = document.createElement('option');
+    defaultOption.value = '';
+    defaultOption.textContent = getTranslation('placeholders.selectDateFirst');
+    timeSelect.appendChild(defaultOption);
     timeSelect.disabled = true;
 }
 
@@ -206,12 +307,12 @@ function validateForm() {
     
     // Required fields
     const requiredFields = [
-        { id: 'date', name: 'Date' },
-        { id: 'time', name: 'Time' },
-        { id: 'people', name: 'Number of People' },
-        { id: 'firstName', name: 'First Name' },
-        { id: 'lastName', name: 'Last Name' },
-        { id: 'phone', name: 'Phone Number' }
+        { id: 'date', name: getTranslation('fields.date') },
+        { id: 'time', name: getTranslation('fields.time') },
+        { id: 'people', name: getTranslation('fields.people') },
+        { id: 'firstName', name: getTranslation('fields.firstName') },
+        { id: 'lastName', name: getTranslation('fields.lastName') },
+        { id: 'phone', name: getTranslation('fields.phone') }
     ];
     
     // Check required fields
@@ -220,7 +321,7 @@ function validateForm() {
         const value = element.value.trim();
         
         if (!value) {
-            showError(element, `${field.name} is required`);
+            showError(element, `${field.name} ${getTranslation('validation.required')}`);
             isValid = false;
         }
     });
@@ -234,7 +335,8 @@ function validateForm() {
         minDate.setHours(0, 0, 0, 0);
         
         if (selectedDate < minDate) {
-            showError(dateInput, `Reservations must be made at least ${restaurantConfig.restaurant.reservation.minDaysAdvance} day(s) in advance`);
+            const message = getTranslation('validation.dateAdvance').replace('{days}', restaurantConfig.restaurant.reservation.minDaysAdvance);
+            showError(dateInput, message);
             isValid = false;
         }
         
@@ -242,7 +344,7 @@ function validateForm() {
         const dayOfWeek = getDayOfWeek(selectedDate);
         const dayConfig = restaurantConfig.restaurant.hours[dayOfWeek];
         if (dayConfig.closed) {
-            showError(dateInput, 'Restaurant is closed on this day');
+            showError(dateInput, getTranslation('validation.restaurantClosed'));
             isValid = false;
         }
     }
@@ -253,7 +355,10 @@ function validateForm() {
         const { minPeople, maxPeople } = restaurantConfig.restaurant.reservation;
         
         if (people < minPeople || people > maxPeople) {
-            showError(peopleInput, `Number of people must be between ${minPeople} and ${maxPeople}`);
+            const message = getTranslation('validation.peopleRange')
+                .replace('{min}', minPeople)
+                .replace('{max}', maxPeople);
+            showError(peopleInput, message);
             isValid = false;
         }
     }
@@ -265,7 +370,7 @@ function validateForm() {
         const cleanPhone = phoneInput.value.replace(/[\s\-\(\)]/g, '');
         
         if (!phoneRegex.test(cleanPhone)) {
-            showError(phoneInput, 'Please enter a valid phone number');
+            showError(phoneInput, getTranslation('validation.validPhone'));
             isValid = false;
         }
     }
@@ -275,13 +380,13 @@ function validateForm() {
     
     const firstNameInput = document.getElementById('firstName');
     if (firstNameInput.value && !nameRegex.test(firstNameInput.value.trim())) {
-        showError(firstNameInput, 'First name can only contain letters, spaces, hyphens, and apostrophes');
+        showError(firstNameInput, `${getTranslation('fields.firstName')} ${getTranslation('validation.validName')}`);
         isValid = false;
     }
     
     const lastNameInput = document.getElementById('lastName');
     if (lastNameInput.value && !nameRegex.test(lastNameInput.value.trim())) {
-        showError(lastNameInput, 'Last name can only contain letters, spaces, hyphens, and apostrophes');
+        showError(lastNameInput, `${getTranslation('fields.lastName')} ${getTranslation('validation.validName')}`);
         isValid = false;
     }
     
@@ -389,8 +494,8 @@ function showSuccessMessage() {
             color: #51cf66;
             font-weight: 500;
         ">
-            <h3 style="margin-bottom: 0.5rem;">Reservation Submitted Successfully!</h3>
-            <p style="margin: 0; font-size: 0.9rem;">Your reservation has been logged to the console. Check the browser's developer tools to view the data.</p>
+            <h3 style="margin-bottom: 0.5rem;">${getTranslation('success.title')}</h3>
+            <p style="margin: 0; font-size: 0.9rem;">${getTranslation('success.message')}</p>
         </div>
     `;
     
@@ -441,12 +546,12 @@ function formatPhoneNumber(e) {
 // Add loading state to submit button
 form.addEventListener('submit', function() {
     submitBtn.disabled = true;
-    submitBtn.textContent = 'Submitting...';
+    submitBtn.textContent = getTranslation('buttons.submitting');
     
     // Re-enable button after a short delay (simulating processing)
     setTimeout(() => {
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Book Reservation';
+        submitBtn.textContent = getTranslation('buttons.submit');
     }, 2000);
 });
 
@@ -454,5 +559,5 @@ form.addEventListener('submit', function() {
 initializeFormFunctionality();
 
 // Console welcome message
-console.log('%c🍽️ Restaurant Reservation Form', 'color: #f08800; font-size: 20px; font-weight: bold;');
-console.log('%cForm data will be logged here when submitted!', 'color: #666666; font-size: 14px;'); 
+console.log(`%c🍽️ ${getTranslation('console.welcome')}`, 'color: #f08800; font-size: 20px; font-weight: bold;');
+console.log(`%c${getTranslation('console.dataMessage')}`, 'color: #666666; font-size: 14px;'); 

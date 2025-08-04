@@ -14,94 +14,102 @@
 </head>
 <body>
     <div class="container">
+        <!-- Language Toggle -->
+        <div class="language-toggle">
+            <button id="langToggle" class="lang-btn">
+                <span class="lang-text">EN</span>
+                <span class="lang-icon">🌐</span>
+            </button>
+        </div>
+
         <header>
-            <h1>Make a Reservation</h1>
-            <p>Book your table at our restaurant</p>
+            <h1 data-translate="title">Make a Reservation</h1>
+            <p data-translate="subtitle">Book your table at our restaurant</p>
         </header>
 
         <main>
             <form id="reservationForm" class="reservation-form">
                 <!-- Date and Time Section -->
                 <section class="form-section">
-                    <h2>When would you like to dine?</h2>
+                    <h2 data-translate="sections.dateTime">When would you like to dine?</h2>
                     
                     <div class="form-group">
-                        <label for="date">Date *</label>
+                        <label for="date" data-translate="fields.date">Date *</label>
                         <input type="date" id="date" name="date" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="time">Time *</label>
+                        <label for="time" data-translate="fields.time">Time *</label>
                         <select id="time" name="time" required>
-                            <option value="">Select a date first</option>
+                            <option value="" data-translate="placeholders.selectDateFirst">Select a date first</option>
                         </select>
                     </div>
 
                     <div class="form-group">
-                        <label for="people">Number of People *</label>
+                        <label for="people" data-translate="fields.people">Number of People *</label>
                         <input type="number" id="people" name="people" min="1" max="20" required>
                     </div>
                 </section>
 
                 <!-- Contact Information Section -->
                 <section class="form-section">
-                    <h2>Contact Information</h2>
+                    <h2 data-translate="sections.contact">Contact Information</h2>
                     
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="firstName">First Name *</label>
+                            <label for="firstName" data-translate="fields.firstName">First Name *</label>
                             <input type="text" id="firstName" name="firstName" required>
                         </div>
 
                         <div class="form-group">
-                            <label for="lastName">Last Name *</label>
+                            <label for="lastName" data-translate="fields.lastName">Last Name *</label>
                             <input type="text" id="lastName" name="lastName" required>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="phone">Phone Number *</label>
+                        <label for="phone" data-translate="fields.phone">Phone Number *</label>
                         <input type="tel" id="phone" name="phone" required>
                     </div>
                 </section>
 
                 <!-- Preferences Section -->
                 <section class="form-section">
-                    <h2>Preferences</h2>
+                    <h2 data-translate="sections.preferences">Preferences</h2>
                     
                     <div class="form-group">
-                        <label>Seating Preference</label>
+                        <label data-translate="fields.seatingPreference">Seating Preference</label>
                         <div class="radio-group">
                             <label class="radio-label">
                                 <input type="radio" name="seating" value="inside">
                                 <span class="radio-custom"></span>
-                                Inside
+                                <span data-translate="options.inside">Inside</span>
                             </label>
                             <label class="radio-label">
                                 <input type="radio" name="seating" value="patio">
                                 <span class="radio-custom"></span>
-                                Patio
+                                <span data-translate="options.patio">Patio</span>
                             </label>
                             <label class="radio-label">
                                 <input type="radio" name="seating" value="no-preference" checked>
                                 <span class="radio-custom"></span>
-                                No Preference
+                                <span data-translate="options.noPreference">No Preference</span>
                             </label>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label>Accessibility</label>
+                        <label data-translate="fields.accessibility">Accessibility</label>
                         <div class="checkbox-group">
                             <label class="checkbox-label">
                                 <input type="checkbox" name="wheelchair" value="true">
                                 <span class="checkbox-custom"></span>
-                                Wheelchair Accessible
+                                <span data-translate="options.wheelchair">Wheelchair Accessible</span>
                             </label>
                             <label class="checkbox-label">
                                 <input type="checkbox" name="hearing" value="true">
                                 <span class="checkbox-custom"></span>
-                                Hearing Impairment
+                                <span data-translate="options.hearing">Hearing Impairment</span>
                             </label>
                         </div>
                     </div>
@@ -109,17 +117,17 @@
 
                 <!-- Special Requests Section -->
                 <section class="form-section">
-                    <h2>Special Requests</h2>
+                    <h2 data-translate="sections.specialRequests">Special Requests</h2>
                     
                     <div class="form-group">
-                        <label for="specialRequests">Additional Notes or Requests</label>
-                        <textarea id="specialRequests" name="specialRequests" rows="4" placeholder="Any special requests, dietary restrictions, or notes for your reservation..."></textarea>
+                        <label for="specialRequests" data-translate="fields.specialRequests">Additional Notes or Requests</label>
+                        <textarea id="specialRequests" name="specialRequests" rows="4" data-translate-placeholder="placeholders.specialRequests" placeholder="Any special requests, dietary restrictions, or notes for your reservation..."></textarea>
                     </div>
                 </section>
 
                 <!-- Submit Button -->
                 <div class="form-actions">
-                    <button type="submit" class="submit-btn">Book Reservation</button>
+                    <button type="submit" class="submit-btn" data-translate="buttons.submit">Book Reservation</button>
                 </div>
             </form>
         </main>

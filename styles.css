@@ -17,12 +17,58 @@ body {
     max-width: 800px;
     margin: 0 auto;
     padding: 2rem 1rem;
+    position: relative;
+}
+
+/* Language Toggle Styles */
+.language-toggle {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 100;
+}
+
+.lang-btn {
+    font-family: 'Futura PT', 'Futura', 'Trebuchet MS', sans-serif;
+    background: #ffffff;
+    color: #000000;
+    border: 2px solid #f08800;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 8px rgba(240, 136, 0, 0.2);
+}
+
+.lang-btn:hover {
+    background: #f08800;
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(240, 136, 0, 0.3);
+}
+
+.lang-btn:active {
+    transform: translateY(0);
+}
+
+.lang-text {
+    font-weight: 700;
+}
+
+.lang-icon {
+    font-size: 1.1rem;
 }
 
 /* Header Styles */
 header {
     text-align: center;
     margin-bottom: 3rem;
+    margin-top: 2rem;
 }
 
 header h1 {
@@ -296,6 +342,18 @@ textarea {
         padding: 1rem;
     }
     
+    .language-toggle {
+        position: relative;
+        top: auto;
+        right: auto;
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+    
+    header {
+        margin-top: 1rem;
+    }
+    
     header h1 {
         font-size: 2rem;
     }
@@ -337,6 +395,11 @@ textarea {
     
     .form-section h2 {
         font-size: 1.2rem;
+    }
+    
+    .lang-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
     }
 }
 

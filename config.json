@@ -45,5 +45,115 @@
       "maxDaysAdvance": 90,
       "timeInterval": 15
     }
+  },
+  "languages": {
+    "en": {
+      "title": "Make a Reservation",
+      "subtitle": "Book your table at our restaurant",
+      "sections": {
+        "dateTime": "When would you like to dine?",
+        "contact": "Contact Information",
+        "preferences": "Preferences",
+        "specialRequests": "Special Requests"
+      },
+      "fields": {
+        "date": "Date",
+        "time": "Time",
+        "people": "Number of People",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "phone": "Phone Number",
+        "seatingPreference": "Seating Preference",
+        "accessibility": "Accessibility",
+        "specialRequests": "Additional Notes or Requests"
+      },
+      "options": {
+        "inside": "Inside",
+        "patio": "Patio",
+        "noPreference": "No Preference",
+        "wheelchair": "Wheelchair Accessible",
+        "hearing": "Hearing Impairment"
+      },
+      "placeholders": {
+        "selectDateFirst": "Select a date first",
+        "selectTime": "Select a time",
+        "restaurantClosed": "Restaurant is closed on this day",
+        "specialRequests": "Any special requests, dietary restrictions, or notes for your reservation..."
+      },
+      "buttons": {
+        "submit": "Book Reservation",
+        "submitting": "Submitting..."
+      },
+      "validation": {
+        "required": "is required",
+        "dateAdvance": "Reservations must be made at least {days} day(s) in advance",
+        "restaurantClosed": "Restaurant is closed on this day",
+        "peopleRange": "Number of people must be between {min} and {max}",
+        "validPhone": "Please enter a valid phone number",
+        "validName": "can only contain letters, spaces, hyphens, and apostrophes"
+      },
+      "success": {
+        "title": "Reservation Submitted Successfully!",
+        "message": "Your reservation has been logged to the console. Check the browser's developer tools to view the data."
+      },
+      "console": {
+        "welcome": "Restaurant Reservation Form",
+        "dataMessage": "Form data will be logged here when submitted!"
+      }
+    },
+    "es": {
+      "title": "Hacer una Reserva",
+      "subtitle": "Reserva tu mesa en nuestro restaurante",
+      "sections": {
+        "dateTime": "¿Cuándo te gustaría cenar?",
+        "contact": "Información de Contacto",
+        "preferences": "Preferencias",
+        "specialRequests": "Solicitudes Especiales"
+      },
+      "fields": {
+        "date": "Fecha",
+        "time": "Hora",
+        "people": "Número de Personas",
+        "firstName": "Nombre",
+        "lastName": "Apellido",
+        "phone": "Número de Teléfono",
+        "seatingPreference": "Preferencia de Asiento",
+        "accessibility": "Accesibilidad",
+        "specialRequests": "Notas o Solicitudes Adicionales"
+      },
+      "options": {
+        "inside": "Interior",
+        "patio": "Terraza",
+        "noPreference": "Sin Preferencia",
+        "wheelchair": "Acceso para Silla de Ruedas",
+        "hearing": "Discapacidad Auditiva"
+      },
+      "placeholders": {
+        "selectDateFirst": "Selecciona una fecha primero",
+        "selectTime": "Selecciona una hora",
+        "restaurantClosed": "El restaurante está cerrado en este día",
+        "specialRequests": "Cualquier solicitud especial, restricciones dietéticas o notas para tu reserva..."
+      },
+      "buttons": {
+        "submit": "Reservar Mesa",
+        "submitting": "Enviando..."
+      },
+      "validation": {
+        "required": "es requerido",
+        "dateAdvance": "Las reservas deben hacerse con al menos {days} día(s) de anticipación",
+        "restaurantClosed": "El restaurante está cerrado en este día",
+        "peopleRange": "El número de personas debe estar entre {min} y {max}",
+        "validPhone": "Por favor ingresa un número de teléfono válido",
+        "validName": "solo puede contener letras, espacios, guiones y apóstrofes"
+      },
+      "success": {
+        "title": "¡Reserva Enviada Exitosamente!",
+        "message": "Tu reserva ha sido registrada en la consola. Revisa las herramientas de desarrollador del navegador para ver los datos."
+      },
+      "console": {
+        "welcome": "Formulario de Reserva de Restaurante",
+        "dataMessage": "¡Los datos del formulario se registrarán aquí cuando se envíe!"
+      }
+    }
   }
 } 
