@@ -1,9 +1,79 @@
 // DOM Elements
 const form = document.getElementById('reservationForm');
 const submitBtn = document.querySelector('.submit-btn');
+const dateInput = document.getElementById('date');
+const timeSelect = document.getElementById('time');
+const peopleInput = document.getElementById('people');
 
-// Form validation and submission
-form.addEventListener('submit', function(e) {
+// Wait for configuration to be loaded
+function waitForConfig() {
+    return new Promise((resolve) => {
+        if (restaurantConfig) {
+            resolve();
+        } else {
+            const checkConfig = setInterval(() => {
+                if (restaurantConfig) {
+                    clearInterval(checkConfig);
+                    resolve();
+                }
+            }, 100);
+        }
+    });
+}
+
+// Initialize form functionality after config is loaded
+async function initializeFormFunctionality() {
+    await waitForConfig();
+    
+    // Set up event listeners
+    setupEventListeners();
+    
+    // Initialize form constraints
+    initializeFormConstraints();
+}
+
+// Set up all event listeners
+function setupEventListeners() {
+    // Form submission
+    form.addEventListener('submit', handleFormSubmit);
+    
+    // Date change event
+    dateInput.addEventListener('change', handleDateChange);
+    
+    // Real-time validation
+    const inputs = form.querySelectorAll('input, select, textarea');
+    inputs.forEach(input => {
+        input.addEventListener('blur', clearFieldError);
+        input.addEventListener('input', clearFieldError);
+    });
+    
+    // Phone number formatting
+    const phoneInput = document.getElementById('phone');
+    phoneInput.addEventListener('input', formatPhoneNumber);
+}
+
+// Initialize form constraints from config
+function initializeFormConstraints() {
+    if (!restaurantConfig) return;
+    
+    // Update people input constraints
+    peopleInput.setAttribute('max', restaurantConfig.restaurant.reservation.maxPeople);
+    peopleInput.setAttribute('min', restaurantConfig.restaurant.reservation.minPeople);
+    
+    // Set date constraints
+    const today = new Date();
+    const minDate = new Date(today);
+    minDate.setDate(today.getDate() + restaurantConfig.restaurant.reservation.minDaysAdvance);
+    
+    const maxDate = new Date(today);
+    maxDate.setDate(today.getDate() + restaurantConfig.restaurant.reservation.maxDaysAdvance);
+    
+    dateInput.setAttribute('min', minDate.toISOString().split('T')[0]);
+    dateInput.setAttribute('max', maxDate.toISOString().split('T')[0]);
+}
+
+// Handle form submission
+function handleFormSubmit(e) {
     e.preventDefault();
     
     // Clear previous error states
@@ -25,8 +95,110 @@ form.addEventListener('submit', function(e) {
         
         // Reset custom radio/checkbox styling
         resetCustomInputs();
+        
+        // Reset time options
+        resetTimeOptions();
     }
-});
+}
+
+// Handle date change
+function handleDateChange() {
+    const selectedDate = dateInput.value;
+    if (selectedDate) {
+        generateTimeOptions(selectedDate);
+    } else {
+        resetTimeOptions();
+    }
+}
+
+// Generate time options based on selected date
+function generateTimeOptions(selectedDate) {
+    if (!restaurantConfig) return;
+    
+    const date = new Date(selectedDate);
+    const dayOfWeek = getDayOfWeek(date);
+    const dayConfig = restaurantConfig.restaurant.hours[dayOfWeek];
+    
+    // Clear existing options
+    timeSelect.innerHTML = '<option value="">Select a time</option>';
+    
+    if (dayConfig.closed) {
+        timeSelect.innerHTML = '<option value="">Restaurant is closed on this day</option>';
+        timeSelect.disabled = true;
+        return;
+    }
+    
+    timeSelect.disabled = false;
+    
+    // Parse opening and closing times
+    const openTime = parseTime(dayConfig.open);
+    const closeTime = parseTime(dayConfig.close);
+    const interval = restaurantConfig.restaurant.reservation.timeInterval;
+    
+    // Generate time slots
+    const timeSlots = generateTimeSlots(openTime, closeTime, interval);
+    
+    // Add options to select
+    timeSlots.forEach(timeSlot => {
+        const option = document.createElement('option');
+        option.value = timeSlot.value;
+        option.textContent = timeSlot.display;
+        timeSelect.appendChild(option);
+    });
+}
+
+// Get day of week as string
+function getDayOfWeek(date) {
+    const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+    return days[date.getDay()];
+}
+
+// Parse time string (HH:MM) to minutes since midnight
+function parseTime(timeString) {
+    const [hours, minutes] = timeString.split(':').map(Number);
+    return hours * 60 + minutes;
+}
+
+// Convert minutes since midnight to time string
+function minutesToTimeString(minutes) {
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
+}
+
+// Generate time slots between open and close times
+function generateTimeSlots(openMinutes, closeMinutes, intervalMinutes) {
+    const slots = [];
+    let currentTime = openMinutes;
+    
+    while (currentTime < closeMinutes) {
+        const timeString = minutesToTimeString(currentTime);
+        const displayTime = formatTimeForDisplay(timeString);
+        
+        slots.push({
+            value: timeString,
+            display: displayTime
+        });
+        
+        currentTime += intervalMinutes;
+    }
+    
+    return slots;
+}
+
+// Format time for display (12-hour format)
+function formatTimeForDisplay(timeString) {
+    const [hours, minutes] = timeString.split(':').map(Number);
+    const period = hours >= 12 ? 'PM' : 'AM';
+    const displayHours = hours === 0 ? 12 : hours > 12 ? hours - 12 : hours;
+    return `${displayHours}:${minutes.toString().padStart(2, '0')} ${period}`;
+}
+
+// Reset time options
+function resetTimeOptions() {
+    timeSelect.innerHTML = '<option value="">Select a date first</option>';
+    timeSelect.disabled = true;
+}
 
 // Form validation function
 function validateForm() {
@@ -53,30 +225,40 @@ function validateForm() {
         }
     });
     
-    // Validate date (must be today or future)
-    const dateInput = document.getElementById('date');
-    if (dateInput.value) {
+    // Validate date using config
+    if (dateInput.value && restaurantConfig) {
         const selectedDate = new Date(dateInput.value);
         const today = new Date();
-        today.setHours(0, 0, 0, 0);
+        const minDate = new Date(today);
+        minDate.setDate(today.getDate() + restaurantConfig.restaurant.reservation.minDaysAdvance);
+        minDate.setHours(0, 0, 0, 0);
         
-        if (selectedDate < today) {
-            showError(dateInput, 'Date must be today or in the future');
+        if (selectedDate < minDate) {
+            showError(dateInput, `Reservations must be made at least ${restaurantConfig.restaurant.reservation.minDaysAdvance} day(s) in advance`);
+            isValid = false;
+        }
+        
+        // Check if restaurant is closed on selected day
+        const dayOfWeek = getDayOfWeek(selectedDate);
+        const dayConfig = restaurantConfig.restaurant.hours[dayOfWeek];
+        if (dayConfig.closed) {
+            showError(dateInput, 'Restaurant is closed on this day');
             isValid = false;
         }
     }
     
-    // Validate number of people
-    const peopleInput = document.getElementById('people');
-    if (peopleInput.value) {
+    // Validate number of people using config
+    if (peopleInput.value && restaurantConfig) {
         const people = parseInt(peopleInput.value);
-        if (people < 1 || people > 20) {
-            showError(peopleInput, 'Number of people must be between 1 and 20');
+        const { minPeople, maxPeople } = restaurantConfig.restaurant.reservation;
+        
+        if (people < minPeople || people > maxPeople) {
+            showError(peopleInput, `Number of people must be between ${minPeople} and ${maxPeople}`);
             isValid = false;
         }
     }
     
-    // Validate phone number (basic format)
+    // Validate phone number
     const phoneInput = document.getElementById('phone');
     if (phoneInput.value) {
         const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
@@ -88,7 +270,7 @@ function validateForm() {
         }
     }
     
-    // Validate names (no numbers or special characters)
+    // Validate names
     const nameRegex = /^[a-zA-Z\s\-']+$/;
     
     const firstNameInput = document.getElementById('firstName');
@@ -121,6 +303,17 @@ function showError(element, message) {
     errorElement.className = 'error-message';
     errorElement.textContent = message;
     element.parentNode.appendChild(errorElement);
+}
+
+// Clear error for a specific field
+function clearFieldError() {
+    if (this.classList.contains('error')) {
+        this.classList.remove('error');
+        const errorMessage = this.parentNode.querySelector('.error-message');
+        if (errorMessage) {
+            errorMessage.remove();
+        }
+    }
 }
 
 // Clear all error states
@@ -231,36 +424,19 @@ function resetCustomInputs() {
     });
 }
 
-// Real-time validation for better UX
-const inputs = form.querySelectorAll('input, select, textarea');
-inputs.forEach(input => {
-    input.addEventListener('blur', function() {
-        // Clear error when user starts typing/selecting
-        if (this.classList.contains('error')) {
-            this.classList.remove('error');
-            const errorMessage = this.parentNode.querySelector('.error-message');
-            if (errorMessage) {
-                errorMessage.remove();
-            }
-        }
-    });
+// Phone number formatting
+function formatPhoneNumber(e) {
+    let value = e.target.value.replace(/\D/g, ''); // Remove non-digits
     
-    input.addEventListener('input', function() {
-        // Clear error on input
-        if (this.classList.contains('error')) {
-            this.classList.remove('error');
-            const errorMessage = this.parentNode.querySelector('.error-message');
-            if (errorMessage) {
-                errorMessage.remove();
-            }
-        }
-    });
-});
-
-// Set minimum date to today
-const dateInput = document.getElementById('date');
-const today = new Date().toISOString().split('T')[0];
-dateInput.setAttribute('min', today);
+    // Format as (XXX) XXX-XXXX
+    if (value.length >= 6) {
+        value = value.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+    } else if (value.length >= 3) {
+        value = value.replace(/(\d{3})(\d{0,3})/, '($1) $2');
+    }
+    
+    e.target.value = value;
+}
 
 // Add loading state to submit button
 form.addEventListener('submit', function() {
@@ -274,20 +450,8 @@ form.addEventListener('submit', function() {
     }, 2000);
 });
 
-// Phone number formatting (optional enhancement)
-const phoneInput = document.getElementById('phone');
-phoneInput.addEventListener('input', function(e) {
-    let value = e.target.value.replace(/\D/g, ''); // Remove non-digits
-    
-    // Format as (XXX) XXX-XXXX
-    if (value.length >= 6) {
-        value = value.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
-    } else if (value.length >= 3) {
-        value = value.replace(/(\d{3})(\d{0,3})/, '($1) $2');
-    }
-    
-    e.target.value = value;
-});
+// Initialize form functionality
+initializeFormFunctionality();
 
 // Console welcome message
 console.log('%c🍽️ Restaurant Reservation Form', 'color: #ffd700; font-size: 20px; font-weight: bold;');

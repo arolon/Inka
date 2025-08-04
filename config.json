@@ -1,0 +1,49 @@
+{
+  "restaurant": {
+    "name": "Elinka Restaurant",
+    "hours": {
+      "sunday": {
+        "open": "11:30",
+        "close": "21:00",
+        "closed": false
+      },
+      "monday": {
+        "open": "11:30",
+        "close": "21:00",
+        "closed": false
+      },
+      "tuesday": {
+        "open": "11:30",
+        "close": "21:00",
+        "closed": false
+      },
+      "wednesday": {
+        "open": "11:30",
+        "close": "21:00",
+        "closed": false
+      },
+      "thursday": {
+        "open": "11:30",
+        "close": "22:00",
+        "closed": false
+      },
+      "friday": {
+        "open": "11:30",
+        "close": "23:00",
+        "closed": false
+      },
+      "saturday": {
+        "open": "11:30",
+        "close": "23:00",
+        "closed": false
+      }
+    },
+    "reservation": {
+      "maxPeople": 20,
+      "minPeople": 1,
+      "minDaysAdvance": 2,
+      "maxDaysAdvance": 90,
+      "timeInterval": 15
+    }
+  }
+} 
