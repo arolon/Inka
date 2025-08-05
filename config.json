@@ -48,111 +48,113 @@
   },
   "languages": {
     "en": {
-      "title": "Make a Reservation",
-      "subtitle": "Book your table at our restaurant",
+      "title": "Reserve Your Table",
+      "subtitle": "Join us for an unforgettable dining experience",
       "sections": {
-        "dateTime": "When would you like to dine?",
-        "contact": "Contact Information",
-        "preferences": "Preferences",
-        "specialRequests": "Special Requests"
+        "dateTime": "When would you like to join us?",
+        "contact": "Tell us about yourself",
+        "preferences": "Your preferences",
+        "specialRequests": "Special requests"
       },
       "fields": {
-        "date": "Date",
-        "time": "Time",
-        "people": "Number of People",
-        "firstName": "First Name",
-        "lastName": "Last Name",
-        "phone": "Phone Number",
-        "seatingPreference": "Seating Preference",
-        "accessibility": "Accessibility",
-        "specialRequests": "Additional Notes or Requests"
+        "date": "Preferred date",
+        "time": "Preferred time",
+        "people": "Number of guests",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "phone": "Phone number",
+        "seatingPreference": "Where would you prefer to sit?",
+        "accessibility": "Accessibility needs",
+        "specialRequests": "Any special requests or notes?"
       },
       "options": {
-        "inside": "Inside",
-        "patio": "Patio",
-        "noPreference": "No Preference",
-        "wheelchair": "Wheelchair Accessible",
-        "hearing": "Hearing Impairment"
+        "inside": "Inside dining room",
+        "patio": "Outdoor patio",
+        "noPreference": "No preference",
+        "wheelchair": "Wheelchair accessible seating",
+        "hearing": "Hearing assistance needed",
+        "blind": "Visual assistance needed"
       },
       "placeholders": {
-        "selectDateFirst": "Select a date first",
-        "selectTime": "Select a time",
-        "restaurantClosed": "Restaurant is closed on this day",
-        "specialRequests": "Any special requests, dietary restrictions, or notes for your reservation..."
+        "selectDateFirst": "Please select a date first",
+        "selectTime": "Choose your preferred time",
+        "restaurantClosed": "We're closed on this day",
+        "specialRequests": "Let us know about any dietary restrictions, special occasions, or anything else we should know to make your experience perfect..."
       },
       "buttons": {
-        "submit": "Book Reservation",
-        "submitting": "Submitting..."
+        "submit": "Confirm Reservation",
+        "submitting": "Confirming..."
       },
       "validation": {
         "required": "is required",
-        "dateAdvance": "Reservations must be made at least {days} day(s) in advance",
-        "restaurantClosed": "Restaurant is closed on this day",
-        "peopleRange": "Number of people must be between {min} and {max}",
+        "dateAdvance": "Please make your reservation at least {days} day(s) in advance",
+        "restaurantClosed": "We're closed on this day",
+        "peopleRange": "Please select between {min} and {max} guests",
         "validPhone": "Please enter a valid phone number",
-        "validName": "can only contain letters, spaces, hyphens, and apostrophes"
+        "validName": "should only contain letters, spaces, hyphens, and apostrophes"
       },
       "success": {
-        "title": "Reservation Submitted Successfully!",
-        "message": "Your reservation has been logged to the console. Check the browser's developer tools to view the data."
+        "title": "Reservation Confirmed!",
+        "message": "Thank you! Your reservation has been successfully confirmed. We've logged the details to the console for your reference."
       },
       "console": {
-        "welcome": "Restaurant Reservation Form",
-        "dataMessage": "Form data will be logged here when submitted!"
+        "welcome": "Welcome to Elinka Restaurant",
+        "dataMessage": "Your reservation details will appear here once submitted!"
       }
     },
     "es": {
-      "title": "Hacer una Reserva",
-      "subtitle": "Reserva tu mesa en nuestro restaurante",
+      "title": "Reserva tu Mesa",
+      "subtitle": "Únete a nosotros para una experiencia gastronómica inolvidable",
       "sections": {
-        "dateTime": "¿Cuándo te gustaría cenar?",
-        "contact": "Información de Contacto",
-        "preferences": "Preferencias",
-        "specialRequests": "Solicitudes Especiales"
+        "dateTime": "¿Cuándo te gustaría visitarnos?",
+        "contact": "Cuéntanos sobre ti",
+        "preferences": "Tus preferencias",
+        "specialRequests": "Pedidos especiales"
       },
       "fields": {
-        "date": "Fecha",
-        "time": "Hora",
-        "people": "Número de Personas",
+        "date": "Fecha preferida",
+        "time": "Hora preferida",
+        "people": "Número de personas",
         "firstName": "Nombre",
         "lastName": "Apellido",
-        "phone": "Número de Teléfono",
-        "seatingPreference": "Preferencia de Asiento",
-        "accessibility": "Accesibilidad",
-        "specialRequests": "Notas o Solicitudes Adicionales"
+        "phone": "Número de celular",
+        "seatingPreference": "¿Dónde prefieres sentarte?",
+        "accessibility": "Necesidades de accesibilidad",
+        "specialRequests": "¿Algún pedido especial o nota?"
       },
       "options": {
-        "inside": "Interior",
-        "patio": "Terraza",
-        "noPreference": "Sin Preferencia",
-        "wheelchair": "Acceso para Silla de Ruedas",
-        "hearing": "Discapacidad Auditiva"
+        "inside": "Sala interior",
+        "patio": "Terraza al aire libre",
+        "noPreference": "Sin preferencia",
+        "wheelchair": "Asiento para silla de ruedas",
+        "hearing": "Necesito asistencia auditiva",
+        "blind": "Necesito asistencia visual"
       },
       "placeholders": {
-        "selectDateFirst": "Selecciona una fecha primero",
-        "selectTime": "Selecciona una hora",
-        "restaurantClosed": "El restaurante está cerrado en este día",
-        "specialRequests": "Cualquier solicitud especial, restricciones dietéticas o notas para tu reserva..."
+        "selectDateFirst": "Por favor selecciona una fecha primero",
+        "selectTime": "Elige tu hora preferida",
+        "restaurantClosed": "Estamos cerrados este día",
+        "specialRequests": "Cuéntanos sobre restricciones dietéticas, ocasiones especiales o cualquier cosa que debamos saber para hacer tu experiencia perfecta..."
       },
       "buttons": {
-        "submit": "Reservar Mesa",
-        "submitting": "Enviando..."
+        "submit": "Confirmar Reserva",
+        "submitting": "Confirmando..."
       },
       "validation": {
-        "required": "es requerido",
-        "dateAdvance": "Las reservas deben hacerse con al menos {days} día(s) de anticipación",
-        "restaurantClosed": "El restaurante está cerrado en este día",
-        "peopleRange": "El número de personas debe estar entre {min} y {max}",
-        "validPhone": "Por favor ingresa un número de teléfono válido",
-        "validName": "solo puede contener letras, espacios, guiones y apóstrofes"
+        "required": "es obligatorio",
+        "dateAdvance": "Por favor haz tu reserva con al menos {days} día(s) de anticipación",
+        "restaurantClosed": "Estamos cerrados este día",
+        "peopleRange": "Por favor selecciona entre {min} y {max} personas",
+        "validPhone": "Por favor ingresa un número de celular válido",
+        "validName": "solo debe contener letras, espacios, guiones y apóstrofes"
       },
       "success": {
-        "title": "¡Reserva Enviada Exitosamente!",
-        "message": "Tu reserva ha sido registrada en la consola. Revisa las herramientas de desarrollador del navegador para ver los datos."
+        "title": "¡Reserva Confirmada!",
+        "message": "¡Gracias! Tu reserva ha sido confirmada exitosamente. Hemos registrado los detalles en la consola para tu referencia."
       },
       "console": {
-        "welcome": "Formulario de Reserva de Restaurante",
-        "dataMessage": "¡Los datos del formulario se registrarán aquí cuando se envíe!"
+        "welcome": "Bienvenido a Elinka Restaurant",
+        "dataMessage": "¡Los detalles de tu reserva aparecerán aquí una vez enviados!"
       }
     }
   }

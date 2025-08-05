@@ -8,7 +8,10 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Futura+PT:wght@300;400;500;600;700&family=Proxima+Nova:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Futura+PT:wght@300;400;500;600;700&family=Proxima+Nova:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -23,116 +26,141 @@
         </div>
 
         <header>
-            <h1 data-translate="title">Make a Reservation</h1>
-            <p data-translate="subtitle">Book your table at our restaurant</p>
+            <div class="logo-container">
+                <img src="Assets/EL+INKA+LOGO.webp" alt="Elinka Restaurant Logo" class="logo">
+            </div>
+            <h1 data-translate="title">Reserve Your Table</h1>
+            <p data-translate="subtitle">Join us for an unforgettable dining experience</p>
         </header>
 
         <main>
             <form id="reservationForm" class="reservation-form">
                 <!-- Date and Time Section -->
                 <section class="form-section">
-                    <h2 data-translate="sections.dateTime">When would you like to dine?</h2>
+                    <h2 data-translate="sections.dateTime">When would you like to join us?</h2>
                     
-                    <div class="form-group">
-                        <label for="date" data-translate="fields.date">Date *</label>
-                        <input type="date" id="date" name="date" required>
+                    <div class="date-time-left">
+                        <div class="date-picker-wrapper"></div>
+                        <!--<div class="form-group">
+                            <label for="date" data-translate="fields.date">Preferred date</label>
+                            <div class="date-picker-wrapper">
+                        -->
+                            <input type="text" id="date" name="date" hidden required readonly >
+                            <!--    <div class="date-picker-icon">📅</div>
+                            </div>
+                        </div>-->
                     </div>
 
-                    <div class="form-group">
-                        <label for="time" data-translate="fields.time">Time *</label>
-                        <select id="time" name="time" required>
-                            <option value="" data-translate="placeholders.selectDateFirst">Select a date first</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="people" data-translate="fields.people">Number of People *</label>
-                        <input type="number" id="people" name="people" min="1" max="20" required>
+                    <div class="date-time-right">
+                        <div class="form-group">
+                            <label for="date" data-translate="fields.date">Preferred date</label>
+                            <input type="text" id="date-picker" name="date-picker" class="date-input" required readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="time" data-translate="fields.time">Preferred time</label>
+                            <select id="time" name="time" required>
+                                <option value="" data-translate="placeholders.selectDateFirst">Please select a date first</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="people" data-translate="fields.people">Number of guests</label>
+                            <input type="number" id="people" name="people" min="1" max="20" required>
+                        </div>
                     </div>
                 </section>
 
                 <!-- Contact Information Section -->
                 <section class="form-section">
-                    <h2 data-translate="sections.contact">Contact Information</h2>
+                    <h2 data-translate="sections.contact">Tell us about yourself</h2>
                     
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="firstName" data-translate="fields.firstName">First Name *</label>
+                            <label for="firstName" data-translate="fields.firstName">First name</label>
                             <input type="text" id="firstName" name="firstName" required>
                         </div>
 
                         <div class="form-group">
-                            <label for="lastName" data-translate="fields.lastName">Last Name *</label>
+                            <label for="lastName" data-translate="fields.lastName">Last name</label>
                             <input type="text" id="lastName" name="lastName" required>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="phone" data-translate="fields.phone">Phone Number *</label>
+                        <label for="phone" data-translate="fields.phone">Phone number</label>
                         <input type="tel" id="phone" name="phone" required>
                     </div>
                 </section>
 
                 <!-- Preferences Section -->
                 <section class="form-section">
-                    <h2 data-translate="sections.preferences">Preferences</h2>
+                    <h2 data-translate="sections.preferences">Your preferences</h2>
                     
-                    <div class="form-group">
-                        <label data-translate="fields.seatingPreference">Seating Preference</label>
-                        <div class="radio-group">
-                            <label class="radio-label">
-                                <input type="radio" name="seating" value="inside">
-                                <span class="radio-custom"></span>
-                                <span data-translate="options.inside">Inside</span>
-                            </label>
-                            <label class="radio-label">
-                                <input type="radio" name="seating" value="patio">
-                                <span class="radio-custom"></span>
-                                <span data-translate="options.patio">Patio</span>
-                            </label>
-                            <label class="radio-label">
-                                <input type="radio" name="seating" value="no-preference" checked>
-                                <span class="radio-custom"></span>
-                                <span data-translate="options.noPreference">No Preference</span>
-                            </label>
+                    <div class="preferences-grid">
+                        <div class="preferences-column">
+                            <h3 data-translate="fields.seatingPreference">Where would you prefer to sit?</h3>
+                            <div class="radio-group">
+                                <label class="radio-label">
+                                    <input type="radio" name="seating" value="inside">
+                                    <span class="radio-custom"></span>
+                                    <span data-translate="options.inside">Inside dining room</span>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="seating" value="patio">
+                                    <span class="radio-custom"></span>
+                                    <span data-translate="options.patio">Outdoor patio</span>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="seating" value="no-preference" checked>
+                                    <span class="radio-custom"></span>
+                                    <span data-translate="options.noPreference">No preference</span>
+                                </label>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label data-translate="fields.accessibility">Accessibility</label>
-                        <div class="checkbox-group">
-                            <label class="checkbox-label">
-                                <input type="checkbox" name="wheelchair" value="true">
-                                <span class="checkbox-custom"></span>
-                                <span data-translate="options.wheelchair">Wheelchair Accessible</span>
-                            </label>
-                            <label class="checkbox-label">
-                                <input type="checkbox" name="hearing" value="true">
-                                <span class="checkbox-custom"></span>
-                                <span data-translate="options.hearing">Hearing Impairment</span>
-                            </label>
+                        <div class="preferences-column">
+                            <h3 data-translate="fields.accessibility">Accessibility needs</h3>
+                            <div class="checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="wheelchair" value="true">
+                                    <span class="checkbox-custom"></span>
+                                    <span data-translate="options.wheelchair">Wheelchair accessible seating</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="hearing" value="true">
+                                    <span class="checkbox-custom"></span>
+                                    <span data-translate="options.hearing">Hearing assistance needed</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="blind" value="true">
+                                    <span class="checkbox-custom"></span>
+                                    <span data-translate="options.blind">Visual assistance needed</span>
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </section>
 
                 <!-- Special Requests Section -->
                 <section class="form-section">
-                    <h2 data-translate="sections.specialRequests">Special Requests</h2>
+                    <h2 data-translate="sections.specialRequests">Special requests</h2>
                     
                     <div class="form-group">
-                        <label for="specialRequests" data-translate="fields.specialRequests">Additional Notes or Requests</label>
-                        <textarea id="specialRequests" name="specialRequests" rows="4" data-translate-placeholder="placeholders.specialRequests" placeholder="Any special requests, dietary restrictions, or notes for your reservation..."></textarea>
+                        <label for="specialRequests" data-translate="fields.specialRequests">Any special requests or notes?</label>
+                        <textarea id="specialRequests" name="specialRequests" rows="4" data-translate-placeholder="placeholders.specialRequests" placeholder="Let us know about any dietary restrictions, special occasions, or anything else we should know to make your experience perfect..."></textarea>
                     </div>
                 </section>
 
                 <!-- Submit Button -->
                 <div class="form-actions">
-                    <button type="submit" class="submit-btn" data-translate="buttons.submit">Book Reservation</button>
+                    <button type="submit" class="submit-btn" data-translate="buttons.submit">Confirm Reservation</button>
                 </div>
             </form>
         </main>
     </div>
 
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    
     <!-- Load configuration first -->
     <script src="config.js"></script>
     <script src="script.js"></script>

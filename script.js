@@ -2,12 +2,14 @@
 const form = document.getElementById('reservationForm');
 const submitBtn = document.querySelector('.submit-btn');
 const dateInput = document.getElementById('date');
+const datePickerInput = document.getElementById('date-picker');
 const timeSelect = document.getElementById('time');
 const peopleInput = document.getElementById('people');
 const langToggle = document.getElementById('langToggle');
 
 // Language state
 let currentLanguage = 'en';
+let flatpickrInstance = null;
 
 // Wait for configuration to be loaded
 function waitForConfig() {
@@ -37,6 +39,9 @@ async function initializeFormFunctionality() {
     
     // Initialize language
     initializeLanguage();
+    
+    // Initialize date picker
+    initializeDatePicker();
 }
 
 // Set up all event listeners
@@ -62,6 +67,134 @@ function setupEventListeners() {
     phoneInput.addEventListener('input', formatPhoneNumber);
 }
 
+// Initialize date picker
+function initializeDatePicker() {
+    if (!restaurantConfig) return;
+    
+    const config = restaurantConfig.restaurant;
+    const today = new Date();
+    const minDate = new Date(today);
+    minDate.setDate(today.getDate() + config.reservation.minDaysAdvance);
+    
+    const maxDate = new Date(today);
+    maxDate.setDate(today.getDate() + config.reservation.maxDaysAdvance);
+    
+    // Create available dates array
+    const availableDates = [];
+    const closedDates = [];
+    
+    for (let d = new Date(minDate); d <= maxDate; d.setDate(d.getDate() + 1)) {
+        const dayOfWeek = getDayOfWeek(d);
+        const dayConfig = config.hours[dayOfWeek];
+        
+        if (dayConfig.closed) {
+            closedDates.push(new Date(d));
+        } else {
+            availableDates.push(new Date(d));
+        }
+    }
+    
+    // Initialize Flatpickr on the wrapper div
+    const datePickerWrapper = document.querySelector('.date-picker-wrapper');
+    flatpickrInstance = flatpickr(datePickerWrapper, {
+        dateFormat: "Y-m-d",
+        minDate: minDate,
+        maxDate: maxDate,
+        disable: closedDates,
+        enable: availableDates,
+        allowInput: false,
+        inline: true,
+        locale: {
+            firstDayOfWeek: 1, // Monday
+            weekdays: {
+                shorthand: currentLanguage === 'en' ? ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] : ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
+                longhand: currentLanguage === 'en' ? ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"] : ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"]
+            },
+            months: {
+                shorthand: currentLanguage === 'en' ? ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"] : ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+                longhand: currentLanguage === 'en' ? ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"] : ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+            }
+        },
+        onChange: function(selectedDates, dateStr) {
+            if (selectedDates.length > 0) {
+                // Update both the hidden date field and the visible date-picker field
+                dateInput.value = dateStr;
+                datePickerInput.value = formatSelectedDate(selectedDates[0]);
+                
+                // Generate time options
+                generateTimeOptions(dateStr);
+            } else {
+                // Clear both fields
+                dateInput.value = '';
+                datePickerInput.value = '';
+                resetTimeOptions();
+            }
+        },
+        onDayCreate: function(dObj, dStr, fp, dayElem) {
+            // Add custom classes for different day types
+            const date = new Date(dayElem.dateObj);
+            const dayOfWeek = getDayOfWeek(date);
+            const dayConfig = config.hours[dayOfWeek];
+            
+            if (dayConfig.closed) {
+                dayElem.classList.add('closed');
+                dayElem.title = getTranslation('placeholders.restaurantClosed');
+            } else {
+                dayElem.classList.add('available');
+                dayElem.title = getTranslation('placeholders.selectTime');
+            }
+            
+            // Highlight today
+            const today = new Date();
+            if (date.toDateString() === today.toDateString()) {
+                dayElem.classList.add('today');
+            }
+        }
+    });
+    
+    // Set placeholder text for the visible date picker input
+    datePickerInput.placeholder = getTranslation('placeholders.selectDateFirst');
+}
+
+// Format selected date for display
+function formatSelectedDate(date) {
+    const options = { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+    };
+    
+    if (currentLanguage === 'es') {
+        return date.toLocaleDateString('es-ES', options);
+    } else {
+        return date.toLocaleDateString('en-US', options);
+    }
+}
+
+// Update date picker locale when language changes
+function updateDatePickerLocale() {
+    if (!flatpickrInstance) return;
+    
+    const locale = {
+        firstDayOfWeek: 1,
+        weekdays: {
+            shorthand: currentLanguage === 'en' ? ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] : ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
+            longhand: currentLanguage === 'en' ? ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"] : ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"]
+        },
+        months: {
+            shorthand: currentLanguage === 'en' ? ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"] : ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+            longhand: currentLanguage === 'en' ? ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"] : ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+        }
+    };
+    
+    flatpickrInstance.set('locale', locale);
+    flatpickrInstance.redraw();
+    
+    // Update placeholder text
+    datePickerInput.placeholder = getTranslation('placeholders.selectDateFirst');
+}
+
 // Initialize language system
 function initializeLanguage() {
     // Set initial language
@@ -74,6 +207,7 @@ function toggleLanguage() {
     currentLanguage = currentLanguage === 'en' ? 'es' : 'en';
     updateLanguageDisplay();
     translatePage();
+    updateDatePickerLocale();
     
     // Update time options if a date is selected
     if (dateInput.value) {
@@ -146,17 +280,6 @@ function initializeFormConstraints() {
     // Update people input constraints
     peopleInput.setAttribute('max', restaurantConfig.restaurant.reservation.maxPeople);
     peopleInput.setAttribute('min', restaurantConfig.restaurant.reservation.minPeople);
-    
-    // Set date constraints
-    const today = new Date();
-    const minDate = new Date(today);
-    minDate.setDate(today.getDate() + restaurantConfig.restaurant.reservation.minDaysAdvance);
-    
-    const maxDate = new Date(today);
-    maxDate.setDate(today.getDate() + restaurantConfig.restaurant.reservation.maxDaysAdvance);
-    
-    dateInput.setAttribute('min', minDate.toISOString().split('T')[0]);
-    dateInput.setAttribute('max', maxDate.toISOString().split('T')[0]);
 }
 
 // Handle form submission
@@ -185,6 +308,14 @@ function handleFormSubmit(e) {
         
         // Reset time options
         resetTimeOptions();
+        
+        // Clear date picker
+        if (flatpickrInstance) {
+            flatpickrInstance.clear();
+        }
+        
+        // Clear the visible date picker field
+        datePickerInput.value = '';
     }
 }
 
@@ -246,7 +377,7 @@ function generateTimeOptions(selectedDate) {
 
 // Get day of week as string
 function getDayOfWeek(date) {
-    const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+    const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
     return days[date.getDay()];
 }
 
