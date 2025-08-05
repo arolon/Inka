@@ -283,7 +283,7 @@ function initializeFormConstraints() {
 }
 
 // Handle form submission
-function handleFormSubmit(e) {
+async function handleFormSubmit(e) {
     e.preventDefault();
     
     // Clear previous error states
@@ -291,31 +291,48 @@ function handleFormSubmit(e) {
     
     // Validate form
     if (validateForm()) {
-        // Collect form data
-        const formData = collectFormData();
+        // Show loading state
+        submitBtn.disabled = true;
+        submitBtn.textContent = getTranslation('buttons.submitting');
         
-        // Log the data to console
-        console.log('Reservation Data:', formData);
-        
-        // Show success message
-        showSuccessMessage();
-        
-        // Reset form
-        form.reset();
-        
-        // Reset custom radio/checkbox styling
-        resetCustomInputs();
-        
-        // Reset time options
-        resetTimeOptions();
-        
-        // Clear date picker
-        if (flatpickrInstance) {
-            flatpickrInstance.clear();
+        try {
+            // Collect form data
+            const formData = collectFormData();
+            
+            // Log the data to console
+            console.log('Reservation Data:', formData);
+            
+            // Submit to Supabase
+            await submitReservationToSupabase(formData);
+            
+            // Show success message
+            showSuccessMessage();
+            
+            // Reset form
+            form.reset();
+            
+            // Reset custom radio/checkbox styling
+            resetCustomInputs();
+            
+            // Reset time options
+            resetTimeOptions();
+            
+            // Clear date picker
+            if (flatpickrInstance) {
+                flatpickrInstance.clear();
+            }
+            
+            // Clear the visible date picker field
+            datePickerInput.value = '';
+            
+        } catch (error) {
+            // Show error message
+            showErrorMessage(error.message);
+        } finally {
+            // Re-enable submit button
+            submitBtn.disabled = false;
+            submitBtn.textContent = getTranslation('buttons.submit');
         }
-        
-        // Clear the visible date picker field
-        datePickerInput.value = '';
     }
 }
 
@@ -641,6 +658,38 @@ function showSuccessMessage() {
     }, 5000);
 }
 
+// Show error message
+function showErrorMessage(message) {
+    // Create error message
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'error-message';
+    errorDiv.innerHTML = `
+        <div style="
+            background: rgba(255, 107, 107, 0.1);
+            border: 2px solid #ff6b6b;
+            border-radius: 0;
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: center;
+            color: #ff6b6b;
+            font-weight: 500;
+        ">
+            <h3 style="margin-bottom: 0.5rem;">${getTranslation('error.title')}</h3>
+            <p style="margin: 0; font-size: 0.9rem;">${getTranslation('error.message')}</p>
+        </div>
+    `;
+    
+    // Insert before the form
+    form.parentNode.insertBefore(errorDiv, form);
+    
+    // Remove error message after 5 seconds
+    setTimeout(() => {
+        if (errorDiv.parentNode) {
+            errorDiv.remove();
+        }
+    }, 5000);
+}
+
 // Reset custom radio/checkbox styling
 function resetCustomInputs() {
     // Reset radio buttons to default
@@ -673,18 +722,6 @@ function formatPhoneNumber(e) {
     
     e.target.value = value;
 }
-
-// Add loading state to submit button
-form.addEventListener('submit', function() {
-    submitBtn.disabled = true;
-    submitBtn.textContent = getTranslation('buttons.submitting');
-    
-    // Re-enable button after a short delay (simulating processing)
-    setTimeout(() => {
-        submitBtn.disabled = false;
-        submitBtn.textContent = getTranslation('buttons.submit');
-    }, 2000);
-});
 
 // Initialize form functionality
 initializeFormFunctionality();

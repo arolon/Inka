@@ -95,7 +95,11 @@
       },
       "success": {
         "title": "Reservation Confirmed!",
-        "message": "Thank you! Your reservation has been successfully confirmed. We've logged the details to the console for your reference."
+        "message": "Thank you! Your reservation has been successfully confirmed and saved to our database."
+      },
+      "error": {
+        "title": "Reservation Failed",
+        "message": "Sorry, there was an error processing your reservation. Please try again or contact us directly."
       },
       "console": {
         "welcome": "Welcome to Elinka Restaurant",
@@ -150,7 +154,11 @@
       },
       "success": {
         "title": "¡Reserva Confirmada!",
-        "message": "¡Gracias! Tu reserva ha sido confirmada exitosamente. Hemos registrado los detalles en la consola para tu referencia."
+        "message": "¡Gracias! Tu reserva ha sido confirmada exitosamente y guardada en nuestra base de datos."
+      },
+      "error": {
+        "title": "Reserva Fallida",
+        "message": "Lo sentimos, hubo un error al procesar tu reserva. Por favor intenta de nuevo o contáctanos directamente."
       },
       "console": {
         "welcome": "Bienvenido a Elinka Restaurant",
