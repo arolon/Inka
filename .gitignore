@@ -5,7 +5,7 @@
 .env.staging
 
 # Configuration files with sensitive data
-config-loader.js
+# config-loader.js
 
 # Supabase
 .supabase/

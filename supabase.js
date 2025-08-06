@@ -9,8 +9,8 @@ function getEnvVar(name) {
 }
 
 // Get Supabase credentials from environment variables
-const supabaseUrl = getEnvVar('SUPABASE_URL') || 'https://lmmacdkoiwhmjhscjssa.supabase.co'
-const supabaseAnonKey = getEnvVar('SUPABASE_ANON_KEY') || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxtbWFjZGtvaXdobWpoc2Nqc3NhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ0MjAxNjEsImV4cCI6MjA2OTk5NjE2MX0.38HIXi Atv0U93jzqpY1wHSiPgf1C2VepKIJhsJwbaGw'
+const supabaseUrl = getEnvVar('SUPABASE_URL') 
+const supabaseAnonKey = getEnvVar('SUPABASE_ANON_KEY')
 
 // Create Supabase client
 const supabase = createClient(supabaseUrl, supabaseAnonKey)
