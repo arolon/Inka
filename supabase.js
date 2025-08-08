@@ -1,19 +1,15 @@
 // Supabase configuration
 import { createClient } from 'https://cdn.skypack.dev/@supabase/supabase-js'
 
-// Load environment variables
-function getEnvVar(name) {
-    // For browser environment, we'll use a different approach
-    // This function will be replaced by build tools or server-side rendering
-    return window.ENV_VARS?.[name] || process.env?.[name]
-}
-
-// Get Supabase credentials from environment variables
-const supabaseUrl = getEnvVar('SUPABASE_URL') 
-const supabaseAnonKey = getEnvVar('SUPABASE_ANON_KEY')
+// Replace with your Supabase URL and anon key
+const supabaseUrl = 'https://lmmacdkoiwhmjhscjssa.supabase.co'
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxtbWFjZGtvaXdobWpoc2Nqc3NhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ0MjAxNjEsImV4cCI6MjA2OTk5NjE2MX0.38HIXiAtv0U93jzqpY1wHSiPgf1C2VepKIJhsJwbaGw'
 
 // Create Supabase client
 const supabase = createClient(supabaseUrl, supabaseAnonKey)
+
+// Make Supabase client available globally
+window.supabase = supabase
 
 // Function to submit reservation to Supabase
 async function submitReservationToSupabase(reservationData) {
@@ -84,5 +80,4 @@ function formatNotes(reservationData) {
 }
 
 // Export functions for use in other files
-window.submitReservationToSupabase = submitReservationToSupabase
-window.supabase = supabase 
+window.submitReservationToSupabase = submitReservationToSupabase 

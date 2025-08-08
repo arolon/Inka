@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservations Dashboard - Elinka Restaurant</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Futura+PT:wght@300;400;500;600;700&family=Proxima+Nova:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Existing Styles -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Dashboard Styles -->
+    <link rel="stylesheet" href="dashboard-styles.css">
+</head>
+<body>
+    <!-- Authentication Modal -->
+    <div id="authOverlay" class="auth-overlay">
+        <div class="auth-modal">
+            <h2>Admin Access</h2>
+            <input type="password" id="authCode" placeholder="0000" maxlength="4" pattern="[0-9]{4}">
+            <button class="auth-btn" onclick="authenticate()">Enter</button>
+        </div>
+    </div>
+
+    <!-- Edit Reservation Modal -->
+    <div id="editOverlay" class="edit-overlay" style="display: none;">
+        <div class="edit-modal">
+            <h2>Edit Reservation</h2>
+            <form class="edit-form" id="editForm">
+                <div class="form-group">
+                    <label for="editFirstName">First Name</label>
+                    <input type="text" id="editFirstName" name="first_name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editLastName">Last Name</label>
+                    <input type="text" id="editLastName" name="last_name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editPhone">Phone Number</label>
+                    <input type="tel" id="editPhone" name="phone_number" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editGuests">Number of Guests</label>
+                    <input type="number" id="editGuests" name="guests" min="1" max="20" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editDate">Date</label>
+                    <input type="date" id="editDate" name="reservation_date" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editTime">Time</label>
+                    <input type="time" id="editTime" name="reservation_time" required>
+                </div>
+                
+                <div class="form-group full-width">
+                    <label for="editNotes">Notes</label>
+                    <textarea id="editNotes" name="notes" rows="4"></textarea>
+                </div>
+                
+                <div class="modal-buttons">
+                    <button type="button" class="cancel-btn" onclick="closeEditModal()">Cancel</button>
+                    <button type="submit" class="save-btn" id="saveBtn">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="dashboard" class="container" style="display: none;">
+        <header>
+            <div class="logo-container">
+                <img src="Assets/EL+INKA+LOGO.webp" alt="Elinka Restaurant Logo" class="logo">
+            </div>
+            <h1>Reservations Dashboard</h1>
+            <p>Manage and view daily reservations</p>
+        </header>
+
+        <!-- Dashboard Controls -->
+        <div class="dashboard-controls">
+            <div class="date-navigation">
+                <button class="nav-btn" onclick="previousDay()">←</button>
+                <div class="current-date" id="currentDate"></div>
+                <button class="nav-btn" onclick="nextDay()">→</button>
+                <input type="date" class="date-picker" id="datePicker" onchange="selectDate(this.value)">
+            </div>
+            
+            <div class="controls-right">
+                <button class="toggle-btn" id="amToggle" onclick="toggleTimePeriod('AM')">AM</button>
+                <button class="toggle-btn" id="pmToggle" onclick="toggleTimePeriod('PM')">PM</button>
+                <button class="refresh-btn" onclick="refreshData()">Refresh</button>
+            </div>
+        </div>
+
+        <!-- Reservations Display -->
+        <div class="reservations-container">
+            <div class="time-section" id="amSection">
+                <h2>Morning Reservations (AM)</h2>
+                <div id="amReservations" class="reservations-list">
+                    <div class="loading">Loading...</div>
+                </div>
+            </div>
+            
+            <div class="time-section" id="pmSection">
+                <h2>Afternoon/Evening Reservations (PM)</h2>
+                <div id="pmReservations" class="reservations-list">
+                    <div class="loading">Loading...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Configuration Loader (load first) -->
+    <script src="config-loader.js"></script>
+    
+    <!-- Supabase -->
+    <script type="module" src="supabase.js"></script>
+    
+    <!-- Dashboard JavaScript -->
+    <script src="dashboard.js"></script>
+</body>
+</html> 
