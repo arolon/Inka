@@ -86,11 +86,11 @@
 
         <!-- Dashboard Controls -->
         <div class="dashboard-controls">
+            <div class="current-date" id="currentDate"></div>
             <div class="date-navigation">
                 <button class="nav-btn" onclick="previousDay()">←</button>
-                <div class="current-date" id="currentDate"></div>
+                <input type="date" class="date-picker" id="datePicker" onchange="selectDate(this.value)">               
                 <button class="nav-btn" onclick="nextDay()">→</button>
-                <input type="date" class="date-picker" id="datePicker" onchange="selectDate(this.value)">
             </div>
             
             <div class="controls-right">
